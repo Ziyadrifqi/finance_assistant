@@ -1,0 +1,32 @@
+# === Node / Next.js (frontend) ===
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env
+frontend/.env.local
+
+# === Java / Spring Boot (backend) ===
+backend/build/
+backend/.gradle/
+backend/*.iml
+backend/.idea/
+backend/HELP.md
+
+# === Python / FastAPI (ml-service) ===
+ml-service/__pycache__/
+ml-service/*.pyc
+ml-service/.venv/
+ml-service/venv/
+ml-service/*.joblib
+
+# === Env & secrets ===
+.env
+*.env.local
+
+# === OS / Editor ===
+.DS_Store
+.vscode/
+.idea/
+
+# === Docker ===
+*.log
