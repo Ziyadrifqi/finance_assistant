@@ -29,6 +29,8 @@ export default function RegisterPage() {
       const { confirmPassword, ...payload } = data;
       const response = await api.post("/auth/register", payload);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userEmail", response.data.email);
+localStorage.setItem("userFullName", response.data.fullName);
       router.push("/dashboard");
     } catch (err: any) {
       setServerError(err.response?.data?.message || "Terjadi kesalahan, coba lagi");

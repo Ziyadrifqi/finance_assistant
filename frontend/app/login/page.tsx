@@ -28,6 +28,8 @@ export default function LoginPage() {
     try {
       const response = await api.post("/auth/login", data);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userEmail", response.data.email);
+localStorage.setItem("userFullName", response.data.fullName);
       router.push("/dashboard");
     } catch (err: any) {
       setServerError(err.response?.data?.message || "Email atau password salah");
