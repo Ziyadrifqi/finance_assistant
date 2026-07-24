@@ -29,7 +29,7 @@ export default function LoginPage() {
       const response = await api.post("/auth/login", data);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userEmail", response.data.email);
-localStorage.setItem("userFullName", response.data.fullName);
+      localStorage.setItem("userFullName", response.data.fullName);
       router.push("/dashboard");
     } catch (err: any) {
       setServerError(err.response?.data?.message || "Email atau password salah");
@@ -47,12 +47,14 @@ localStorage.setItem("userFullName", response.data.fullName);
         <ThemeToggle />
       </div>
 
-      <div className="w-full max-w-md relative z-10">
+      <div className="w-full max-w-md relative z-10 animate-fade-up">
         <div className="text-center mb-6 sm:mb-8">
           <div className="inline-flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] mb-3 sm:mb-4">
             <span className="text-white font-bold text-base sm:text-lg">F</span>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">Selamat Datang Kembali</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">
+            Selamat Datang Kembali
+          </h1>
           <p className="text-sm text-[var(--color-muted)] mt-1 px-4 sm:px-0">
             Login untuk melanjutkan ke dashboard kamu
           </p>
@@ -67,7 +69,7 @@ localStorage.setItem("userFullName", response.data.fullName);
               <input
                 {...register("email")}
                 type="email"
-                placeholder="Masukkan email anda"
+                placeholder="Masukkan Email Anda"
                 autoCapitalize="none"
                 className="w-full px-3.5 py-2.5 text-base sm:text-sm rounded-lg border border-[var(--color-border)] bg-[var(--background)] text-[var(--foreground)] placeholder:text-[var(--color-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-all"
               />
@@ -100,8 +102,11 @@ localStorage.setItem("userFullName", response.data.fullName);
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white font-medium py-2.5 rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity mt-2 active:scale-[0.98]"
+              className="w-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white font-medium py-2.5 rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity mt-2 active:scale-[0.98] flex items-center justify-center gap-2"
             >
+              {loading && (
+                <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+              )}
               {loading ? "Memproses..." : "Login"}
             </button>
           </form>
