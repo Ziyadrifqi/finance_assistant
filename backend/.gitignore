@@ -40,3 +40,5 @@ application-local.properties
 application-secret.properties
 
 .env
+
+uploads/

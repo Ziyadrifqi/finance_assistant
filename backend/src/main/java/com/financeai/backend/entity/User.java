@@ -29,6 +29,9 @@ public class User {
     @Column(nullable = false)
     private String fullName;
 
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
+
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
