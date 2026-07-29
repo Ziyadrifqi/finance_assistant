@@ -27,3 +27,21 @@ export const budgetSchema = z.object({
     .refine((val) => !isNaN(Number(val)) && Number(val) > 0, "Limit harus lebih dari 0"),
 });
 export type BudgetFormData = z.infer<typeof budgetSchema>;
+
+export const savingsGoalSchema = z.object({
+  name: z.string().min(1, "Nama target wajib diisi"),
+  targetAmount: z
+    .string()
+    .min(1, "Jumlah target wajib diisi")
+    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, "Jumlah harus lebih dari 0"),
+  targetDate: z.string().optional(),
+});
+export type SavingsGoalFormData = z.infer<typeof savingsGoalSchema>;
+
+export const depositSchema = z.object({
+  amount: z
+    .string()
+    .min(1, "Jumlah wajib diisi")
+    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, "Jumlah harus lebih dari 0"),
+});
+export type DepositFormData = z.infer<typeof depositSchema>;
