@@ -18,3 +18,12 @@ export const transactionSchema = z.object({
   categoryId: z.string().min(1, "Kategori wajib dipilih"),
 });
 export type TransactionFormData = z.infer<typeof transactionSchema>;
+
+export const budgetSchema = z.object({
+  categoryId: z.string().min(1, "Kategori wajib dipilih"),
+  limitAmount: z
+    .string()
+    .min(1, "Limit wajib diisi")
+    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, "Limit harus lebih dari 0"),
+});
+export type BudgetFormData = z.infer<typeof budgetSchema>;
