@@ -25,4 +25,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             @Param("categoryId") Long categoryId,
             @Param("start") LocalDate start,
             @Param("end") LocalDate end);
+
+        @Query("SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t " +
+           "WHERE t.user = :user AND t.category.type = :type " +
+           "AND t.transactionDate BETWEEN :start AND :end")
+    BigDecimal sumByUserAndTypeAndDateRange(
+            @Param("user") User user,
+            @Param("type") com.financeai.backend.entity.CategoryType type,
+            @Param("start") LocalDate start,
+            @Param("end") LocalDate end);
 }
