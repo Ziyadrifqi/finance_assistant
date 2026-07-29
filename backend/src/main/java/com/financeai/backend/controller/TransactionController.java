@@ -18,8 +18,15 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
-    @GetMapping
-    public ResponseEntity<List<TransactionResponse>> getAll(Authentication authentication) {
+   @GetMapping
+    public ResponseEntity<List<TransactionResponse>> getAll(
+            @RequestParam(required = false) Integer month,
+            @RequestParam(required = false) Integer year,
+            Authentication authentication
+    ) {
+        if (month != null && year != null) {
+            return ResponseEntity.ok(transactionService.getByMonth(authentication.getName(), month, year));
+        }
         return ResponseEntity.ok(transactionService.getAll(authentication.getName()));
     }
 

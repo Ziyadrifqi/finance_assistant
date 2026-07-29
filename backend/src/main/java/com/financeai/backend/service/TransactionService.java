@@ -11,6 +11,7 @@ import com.financeai.backend.repository.TransactionRepository;
 import com.financeai.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.time.YearMonth;
 
 import java.util.List;
 
@@ -25,6 +26,15 @@ public class TransactionService {
     public List<TransactionResponse> getAll(String email) {
         User user = findUser(email);
         return transactionRepository.findByUserOrderByTransactionDateDescCreatedAtDesc(user)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+    public List<TransactionResponse> getByMonth(String email, Integer month, Integer year) {
+        User user = findUser(email);
+        YearMonth ym = YearMonth.of(year, month);
+        return transactionRepository.findByUserAndTransactionDateBetweenOrderByTransactionDateDesc(
+                        user, ym.atDay(1), ym.atEndOfMonth())
                 .stream()
                 .map(this::toResponse)
                 .toList();

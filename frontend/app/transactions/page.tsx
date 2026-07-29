@@ -40,7 +40,16 @@ const inputClass =
   "w-full px-3.5 py-2.5 text-base sm:text-sm rounded-lg border border-[var(--color-border)] bg-[var(--background)] text-[var(--foreground)] placeholder:text-[var(--color-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-all";
 const labelClass = "block text-sm font-medium text-[var(--foreground)] mb-1.5";
 
+const MONTH_NAMES = [
+  "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+  "Juli", "Agustus", "September", "Oktober", "November", "Desember",
+];
+
 export default function TransactionsPage() {
+  const now = new Date();
+  const [month, setMonth] = useState(now.getMonth() + 1);
+  const [year, setYear] = useState(now.getFullYear());
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -51,7 +60,10 @@ export default function TransactionsPage() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [catRes, txRes] = await Promise.all([api.get("/categories"), api.get("/transactions")]);
+      const [catRes, txRes] = await Promise.all([
+        api.get("/categories"),
+        api.get("/transactions", { params: { month, year } }),
+      ]);
       setCategories(catRes.data);
       setTransactions(txRes.data);
     } finally {
@@ -61,7 +73,22 @@ export default function TransactionsPage() {
 
   useEffect(() => {
     loadData();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [month, year]);
+
+  const changeMonth = (delta: number) => {
+    let newMonth = month + delta;
+    let newYear = year;
+    if (newMonth > 12) {
+      newMonth = 1;
+      newYear += 1;
+    } else if (newMonth < 1) {
+      newMonth = 12;
+      newYear -= 1;
+    }
+    setMonth(newMonth);
+    setYear(newYear);
+  };
 
   const {
     register: registerCategory,
@@ -162,6 +189,29 @@ export default function TransactionsPage() {
           </button>
         }
       />
+
+      {/* Selector bulan */}
+      <div className="flex items-center justify-center gap-4 mb-6 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl py-3">
+        <button
+          onClick={() => changeMonth(-1)}
+          className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <p className="font-semibold text-[var(--foreground)] w-40 text-center">
+          {MONTH_NAMES[month - 1]} {year}
+        </p>
+        <button
+          onClick={() => changeMonth(1)}
+          className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
 
       {/* Ringkasan */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
