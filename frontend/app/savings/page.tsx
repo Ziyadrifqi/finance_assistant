@@ -117,7 +117,7 @@ export default function SavingsPage() {
   };
 
   return (
-    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+    <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
       <PageHeader
         title="Target Tabungan"
         subtitle="Kumpulkan uang untuk tujuan yang kamu inginkan."
@@ -143,7 +143,7 @@ export default function SavingsPage() {
           <p className="text-sm text-[var(--color-muted)]">Belum ada target tabungan. Klik "Tambah" untuk membuat.</p>
         </div>
       ) : (
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {goals.map((goal) => {
             const percentage = Math.min((goal.currentAmount / goal.targetAmount) * 100, 100);
             const isDone = goal.currentAmount >= goal.targetAmount;

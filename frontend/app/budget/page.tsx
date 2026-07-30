@@ -138,7 +138,7 @@ export default function BudgetPage() {
   };
 
   return (
-    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+    <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
       <PageHeader
         title="Budget"
         subtitle="Atur batas pengeluaran per kategori tiap bulan."
@@ -190,7 +190,7 @@ export default function BudgetPage() {
           </p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="grid lg:grid-cols-2 gap-3">
           {budgets.map((budget) => {
             const percentage = Math.min((budget.spentAmount / budget.limitAmount) * 100, 100);
             const isOver = budget.spentAmount > budget.limitAmount;
