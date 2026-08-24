@@ -28,8 +28,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="id" suppressHydrationWarning className="overflow-x-hidden">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[var(--background)] text-[var(--foreground)] min-h-screen w-full overflow-x-hidden max-w-full`}
+      >
         <ThemeProvider>
           <RouteTransition />
           {children}
