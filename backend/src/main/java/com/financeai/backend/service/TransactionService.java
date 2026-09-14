@@ -11,8 +11,9 @@ import com.financeai.backend.repository.TransactionRepository;
 import com.financeai.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.time.YearMonth;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 @Service
@@ -22,6 +23,7 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    private final ReceiptService receiptService;
 
     public List<TransactionResponse> getAll(String email) {
         User user = findUser(email);
@@ -30,6 +32,7 @@ public class TransactionService {
                 .map(this::toResponse)
                 .toList();
     }
+
     public List<TransactionResponse> getByMonth(String email, Integer month, Integer year) {
         User user = findUser(email);
         YearMonth ym = YearMonth.of(year, month);
@@ -49,6 +52,7 @@ public class TransactionService {
                 .note(request.getNote())
                 .transactionDate(request.getTransactionDate())
                 .category(category)
+                .receiptImageUrl(request.getReceiptImageUrl())
                 .user(user)
                 .build();
 
@@ -63,10 +67,18 @@ public class TransactionService {
 
         Category category = findCategory(request.getCategoryId(), user);
 
+        // Kalau struk diganti dengan yang baru (URL beda), hapus file struk yang lama dari disk
+        String oldReceiptUrl = transaction.getReceiptImageUrl();
+        String newReceiptUrl = request.getReceiptImageUrl();
+        if (oldReceiptUrl != null && !oldReceiptUrl.equals(newReceiptUrl)) {
+            receiptService.deleteReceiptFileIfExists(oldReceiptUrl);
+        }
+
         transaction.setAmount(request.getAmount());
         transaction.setNote(request.getNote());
         transaction.setTransactionDate(request.getTransactionDate());
         transaction.setCategory(category);
+        transaction.setReceiptImageUrl(newReceiptUrl);
 
         transactionRepository.save(transaction);
         return toResponse(transaction);
@@ -76,6 +88,8 @@ public class TransactionService {
         User user = findUser(email);
         Transaction transaction = transactionRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new IllegalArgumentException("Transaksi tidak ditemukan"));
+
+        receiptService.deleteReceiptFileIfExists(transaction.getReceiptImageUrl());
         transactionRepository.delete(transaction);
     }
 
@@ -103,6 +117,7 @@ public class TransactionService {
                         .icon(category.getIcon())
                         .color(category.getColor())
                         .build())
+                .receiptImageUrl(transaction.getReceiptImageUrl())
                 .build();
     }
 }

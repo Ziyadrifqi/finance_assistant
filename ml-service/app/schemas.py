@@ -39,3 +39,9 @@ class AnomalyResult(BaseModel):
 
 class AnomalyResponse(BaseModel):
     anomalies: List[AnomalyResult]
+
+
+class OcrResponse(BaseModel):
+    raw_text: List[str]
+    detected_amount: Optional[float] = None
+    detected_date: Optional[str] = None
