@@ -11,7 +11,7 @@ const api = axios.create({
 
 // Endpoint yang TIDAK butuh token sama sekali — jangan pernah kirim
 // Authorization header ke sini walau ada token (basi/rusak) tersimpan di localStorage.
-const PUBLIC_ENDPOINTS = ["/auth/login", "/auth/register"];
+const PUBLIC_ENDPOINTS = ["/auth/login", "/auth/register", "/auth/forgot-password", "/auth/reset-password"];
 
 api.interceptors.request.use((config) => {
   const isPublicEndpoint = PUBLIC_ENDPOINTS.some((path) => config.url?.includes(path));
