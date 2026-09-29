@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import api from "@/lib/axios";
 import { Modal } from "@/components/Modal";
 import { PageHeader } from "@/components/PageHeader";
+import { SourceBadge } from "@/components/SourceBadge";
+import { SourceAmount } from "@/lib/sources";
 import { budgetSchema, BudgetFormData } from "@/lib/validations/transaction";
 
 interface Category {
@@ -21,6 +23,7 @@ interface Budget {
   category: Category;
   limitAmount: number;
   spentAmount: number;
+  spentBySource: SourceAmount[];
   month: number;
   year: number;
 }
@@ -283,6 +286,26 @@ export default function BudgetPage() {
                     </p>
                   )}
                 </div>
+
+                {/* Rincian pengeluaran per sumber dana */}
+                {budget.spentBySource?.length > 0 && (
+                  <div className="mt-3 pt-3 border-t border-[var(--color-border)]">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-muted)] mb-1.5">
+                      Dibayar dari
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {budget.spentBySource.map((s) => (
+                        <SourceBadge
+                          key={s.id ?? "none"}
+                          name={s.name}
+                          type={s.type}
+                          color={s.color}
+                          extra={formatRupiah(s.total)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}
