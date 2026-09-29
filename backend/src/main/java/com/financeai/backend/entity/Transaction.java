@@ -31,6 +31,9 @@ public class Transaction {
     @Column(nullable = false)
     private LocalDate transactionDate;
 
+    @Column(name = "receipt_image_url")
+    private String receiptImageUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
