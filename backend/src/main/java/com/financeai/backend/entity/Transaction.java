@@ -38,6 +38,11 @@ public class Transaction {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    // Nullable: transaksi lama belum punya sumber dana
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_source_id")
+    private PaymentSource paymentSource;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
