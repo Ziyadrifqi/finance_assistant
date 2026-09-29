@@ -19,6 +19,11 @@ public class TransactionRequest {
     @NotNull(message = "Tanggal wajib diisi")
     private LocalDate transactionDate;
 
+    private String receiptImageUrl;
+
     @NotNull(message = "Kategori wajib dipilih")
     private Long categoryId;
+
+    // Opsional di level API (kompatibel dengan client lama); frontend mewajibkannya
+    private Long paymentSourceId;
 }

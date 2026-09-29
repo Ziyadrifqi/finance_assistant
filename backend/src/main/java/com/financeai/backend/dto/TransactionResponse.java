@@ -17,5 +17,7 @@ public class TransactionResponse {
     private BigDecimal amount;
     private String note;
     private LocalDate transactionDate;
+    private String receiptImageUrl;
     private CategoryResponse category;
+    private PaymentSourceResponse paymentSource;
 }

@@ -1,8 +1,11 @@
 package com.financeai.backend.repository;
 
+import com.financeai.backend.dto.SourceAmountResponse;
+import com.financeai.backend.entity.PaymentSource;
 import com.financeai.backend.entity.Transaction;
 import com.financeai.backend.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -26,7 +29,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             @Param("start") LocalDate start,
             @Param("end") LocalDate end);
 
-        @Query("SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t " +
+    @Query("SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t " +
            "WHERE t.user = :user AND t.category.type = :type " +
            "AND t.transactionDate BETWEEN :start AND :end")
     BigDecimal sumByUserAndTypeAndDateRange(
@@ -34,4 +37,21 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             @Param("type") com.financeai.backend.entity.CategoryType type,
             @Param("start") LocalDate start,
             @Param("end") LocalDate end);
+
+    // Rincian pengeluaran suatu kategori per sumber dana (untuk kartu budget)
+    @Query("SELECT new com.financeai.backend.dto.SourceAmountResponse(s.id, s.name, s.type, s.color, SUM(t.amount)) " +
+           "FROM Transaction t JOIN t.paymentSource s " +
+           "WHERE t.user = :user AND t.category.id = :categoryId " +
+           "AND t.transactionDate BETWEEN :start AND :end " +
+           "GROUP BY s.id, s.name, s.type, s.color " +
+           "ORDER BY SUM(t.amount) DESC")
+    List<SourceAmountResponse> sumBySourceForCategory(
+            @Param("user") User user,
+            @Param("categoryId") Long categoryId,
+            @Param("start") LocalDate start,
+            @Param("end") LocalDate end);
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Transaction t SET t.paymentSource = null WHERE t.paymentSource = :source")
+    void clearPaymentSource(@Param("source") PaymentSource source);
 }
