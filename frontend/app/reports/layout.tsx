@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { DashboardShell } from "@/components/DashboardShell";
 
 export const metadata: Metadata = {
-  title: "Laporan",
+  title: "Laporan Keuangan",
+  description: "Ringkasan & analisis laporan keuangan berkala.",
 };
 
 export default function ReportsLayout({ children }: { children: React.ReactNode }) {
