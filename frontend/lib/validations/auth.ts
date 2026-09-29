@@ -37,3 +37,19 @@ export const changePasswordSchema = z
   });
 
 export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().min(1, "Email wajib diisi").email("Format email tidak valid"),
+});
+export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
+
+export const resetPasswordSchema = z
+  .object({
+    newPassword: z.string().min(6, "Password baru minimal 6 karakter"),
+    confirmNewPassword: z.string().min(1, "Konfirmasi password wajib diisi"),
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    message: "Password tidak cocok",
+    path: ["confirmNewPassword"],
+  });
+export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
