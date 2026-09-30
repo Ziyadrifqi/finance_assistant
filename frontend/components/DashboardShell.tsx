@@ -93,14 +93,20 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   );
 }
 
-export function DashboardShell({ children }: { children: React.ReactNode }) {
+function ShellInner({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <AuthProvider>
-      <div className="flex min-h-screen bg-[var(--background)]">
-      <aside className="hidden md:flex md:flex-col w-60 flex-shrink-0 border-r border-[var(--color-border)] bg-[var(--color-surface)] h-screen sticky top-0">
-        <SidebarContent />
+    <div className="flex min-h-screen bg-[var(--background)]">
+      {/* Sidebar desktop: kotak luar (aside) IKUT MEMANJANG sesuai tinggi konten halaman
+          (default flex stretch, tanpa height eksplisit) supaya background/border-nya
+          nggak "kepotong" kalau halaman lebih tinggi dari 1 layar.
+          Konten di dalamnya (nav, profil, logout) dibungkus div terpisah yang
+          "sticky top-0 h-screen" biar tetap nempel keliatan pas discroll. */}
+      <aside className="hidden md:block w-60 flex-shrink-0 border-r border-[var(--color-border)] bg-[var(--color-surface)]">
+        <div className="sticky top-0 h-screen flex flex-col">
+          <SidebarContent />
+        </div>
       </aside>
 
       {mobileOpen && (
@@ -139,7 +145,14 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
         {children}
       </div>
-     </div>
+    </div>
+  );
+}
+
+export function DashboardShell({ children }: { children: React.ReactNode }) {
+  return (
+    <AuthProvider>
+      <ShellInner>{children}</ShellInner>
     </AuthProvider>
   );
 }
