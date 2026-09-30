@@ -121,24 +121,8 @@ export default function LoginPage() {
               </span>
             </div>
 
-<<<<<<< Updated upstream
-            <div>
-              <label className="block text-sm font-medium text-[var(--foreground)] mb-1.5">
-                Password
-              </label>
-              <input
-                {...register("password")}
-                type="password"
-                placeholder="Masukkan password"
-                className="w-full px-3.5 py-2.5 text-base sm:text-sm rounded-lg border border-[var(--color-border)] bg-[var(--background)] text-[var(--foreground)] placeholder:text-[var(--color-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-all"
-              />
-              {errors.password && (
-                <p className="text-red-500 text-xs mt-1.5">{errors.password.message}</p>
-              )}
-=======
             <div className="text-2xl xl:text-3xl font-black tracking-tight text-white">
               Rp 15.000.000 <span className="text-xs font-normal text-slate-400">/ Rp 20.000.000</span>
->>>>>>> Stashed changes
             </div>
 
             <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700/50">
