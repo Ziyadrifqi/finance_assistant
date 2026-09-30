@@ -7,16 +7,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "transactions")
+@Table(name = "savings_deposits")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Transaction {
+public class SavingsDeposit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,27 +24,14 @@ public class Transaction {
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal amount;
 
-    @Column(length = 500)
-    private String note;
-
-    @Column(nullable = false)
-    private LocalDate transactionDate;
-
-    @Column(name = "receipt_image_url")
-    private String receiptImageUrl;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    @JoinColumn(name = "goal_id", nullable = false)
+    private SavingsGoal goal;
 
-    // Nullable: transaksi lama belum punya sumber dana
+    // Nullable: setoran lama (sebelum fitur ini) tidak punya sumber dana
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_source_id")
     private PaymentSource paymentSource;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;

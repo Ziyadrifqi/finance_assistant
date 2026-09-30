@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -18,4 +19,5 @@ public class SavingsGoalResponse {
     private BigDecimal targetAmount;
     private BigDecimal currentAmount;
     private LocalDate targetDate;
+    private List<SourceAmountResponse> sourceBreakdown;
 }

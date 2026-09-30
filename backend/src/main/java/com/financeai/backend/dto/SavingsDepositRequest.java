@@ -12,4 +12,7 @@ public class SavingsDepositRequest {
     @NotNull(message = "Jumlah wajib diisi")
     @DecimalMin(value = "0.01", message = "Jumlah harus lebih dari 0")
     private BigDecimal amount;
+
+    // Opsional di level API; frontend mewajibkannya
+    private Long paymentSourceId;
 }
